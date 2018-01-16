@@ -15,7 +15,7 @@ num_labels = size(all_theta, 1);
 p = zeros(size(X, 1), 1);
 
 % Add ones to the X data matrix
-X = [ones(m, 1) X];
+X = [ones(m, 1) X]; 
 
 % ====================== YOUR CODE HERE ======================
 % Instructions: Complete the following code to make predictions using
@@ -28,10 +28,30 @@ X = [ones(m, 1) X];
 %       max element, for more information see 'help max'. If your examples 
 %       are in rows, then, you can use max(A, [], 2) to obtain the max 
 %       for each row.
-%       
 
 
+%    I tried implementing it without vectorization but result were somehow wrong
+% 	 I couldn't find the error in this. 
 
+% for exampl=1:m                                        
+% 	maxprob = X(1)*all_theta'(:,1);
+% 	ans_label = 1;
+% 	for label=1:num_labels
+% 		prob_of_label = X(label)*all_theta'(:,label);
+% 		if (maxprob < prob_of_label)
+% 			maxprob = prob_of_label;
+% 			ans_label = label;
+% 		endif
+% 	end;
+% 	p(exampl) = ans_label;
+% end;
+
+
+%    Vectorized approach
+
+mat = sigmoid(all_theta * X');
+[max_val,max_col] = max(mat);
+p = max_col'; 
 
 
 

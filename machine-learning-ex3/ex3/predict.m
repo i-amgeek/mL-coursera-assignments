@@ -23,14 +23,14 @@ X = [ones(m,1) X];    %  Added by me
 %   
 % 	_____Non Vectorised Implementation______
 % 
-% for i=1:m
-% 	a1 = sigmoid(Theta1*X'(:,i));
-% 	a1 = [1; a1];
-% 	a2 = sigmoid(Theta2*a1);
-% 	[maxelem, maxrow] = max(a2);
-% 	p(i) = maxrow;
+ for i=1:m
+ 	a1 = sigmoid(Theta1*X'(:,i));
+ 	a1 = [1; a1];
+ 	a2 = sigmoid(Theta2*a1);
+ 	[maxelem, maxrow] = max(a2);
+ 	p(i) = maxrow;
 
-% end;
+ end;
 
 % 
 % Above implementation was working fine but was much slow
@@ -40,10 +40,10 @@ X = [ones(m,1) X];    %  Added by me
 % 
 
 
-a1 = sigmoid(X * Theta1');
-a1 = [ones(m, 1) a1];
-a2 = sigmoid(a1 * Theta2');
-[val, p] = max(a2, [], 2);
+%a1 = sigmoid(X * Theta1');
+%a1 = [ones(m, 1) a1];
+%a2 = sigmoid(a1 * Theta2');
+%[val, p] = max(a2, [], 2);
 
 
 

@@ -30,6 +30,7 @@ J = 0;
 Theta1_grad = zeros(size(Theta1));
 Theta2_grad = zeros(size(Theta2));
 
+
 % ====================== YOUR CODE HERE ======================
 % Instructions: You should complete the code by working through the
 %               following parts.
@@ -62,65 +63,40 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+a1 = X;
+z2 = [ones(m,1) a1] * Theta1';
+a2 = sigmoid(z2);
+z3 = [ones(m,1) a2] * Theta2';
+a3 = sigmoid(z3);
+a1 = [ones(m,1) a1];
+a2 = [ones(m,1) a2];
+for i = 1:m,
+  yk = zeros(num_labels,1);
+  yk(y(i)) = 1;
+  J = J + ((log(a3(i,:)) * yk) + (log(1 - a3(i,:)) * (1 - yk)));
+end
+J = (-J/m);
+J = J + ((lambda/(2*m)) * (sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2))));
 
+for t = 1:m,
+  yk = zeros(num_labels,1);
+  yk(y(t)) = 1;  
+  delta3 = a3(t,:)' - yk;
+  delta2 = (Theta2' * delta3) .* sigmoidGradient([1, z2(t,:)])';
+  delta2 = delta2(2:end);
+  Theta1_grad = Theta1_grad + (delta2 * a1(t,:));
+  Theta2_grad = Theta2_grad + (delta3 * a2(t,:));
+end
+Theta1_grad = Theta1_grad/m;
+Theta2_grad = Theta2_grad/m;
 
-X = [ones(m,1) X];
-a2 = [ones(m,1) sigmoid(X*Theta1')]; 									% a2 is 5000*25
-h = sigmoid(a2*Theta2'); 												% h is 5000*10
-k = size(h, 2); 														% k is 10
-
-y_new = zeros(m,k);   													%y_new is 5000*10
-for i=1:m
-	y_new(i,y(i)) = 1;    
-end;
-
-
-for j=1:k
-	J =  J + sum(-y_new'(j,:)*log(h(:,j)) + -(1 - y_new'(j,:))*log(1 - h(:,j)));
-end;
-J = J/m;
-
-
-regularator = (sum(sum(Theta1(1:end,2:end).^2)) + sum(sum(Theta2(1:end,2:end).^2))) *lambda/(2*m);
-J = J + regularator;
-
-
-
-
-
-% Simpler way could be
-
-% J = 1/m * sum(sum(-1 * y_new .* log(h)-(1-y_new) .* log(1-h)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + lambda / m * Theta1(:, 2:end);
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + lambda / m * Theta2(:, 2:end);
 % -------------------------------------------------------------
 
 % =========================================================================
 
 % Unroll gradients
 grad = [Theta1_grad(:) ; Theta2_grad(:)];
-
 
 end

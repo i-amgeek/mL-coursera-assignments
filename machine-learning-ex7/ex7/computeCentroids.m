@@ -25,12 +25,13 @@ centroids = zeros(K, n);
 %
 % Note: You can use a for-loop over the centroids to compute this.
 %
-
-
-
-
-
-
+for i=1:K
+	c_i = idx==i;
+	no_of_points=sum(c_i);
+	for j=1:n
+		centroids(i,j)=sum(X(c_i,j))/no_of_points;
+	end;
+end;
 
 
 % =============================================================
